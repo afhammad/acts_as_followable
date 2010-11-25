@@ -46,7 +46,7 @@ module ActsAsFollowable
       # Does not allow duplicate records to be created.
       def follow(followable)
         follow = follow_for_follawable(followable).first
-        if follow.blank? && self != followable
+        if follow.blank?
           Follow.create(:followable => followable, :follower => self)
         end
       end
