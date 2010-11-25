@@ -17,12 +17,7 @@ Run the generator which will generate a migration file.
   script/generate acts_as_followable
 
 The plugin comes with a Follow model file. You can override the default model definition by creating a new 
-app/models/follow.rb file with the content:
-
-  class Follow < ActiveRecord::Base
-    belongs_to :followable, :polymorphic => true
-    belongs_to :follower, :polymorphic => true
-  end  
+app/models/follow.rb file. You can copy the content of a model from {here}[https://github.com/xpepermint/acts_as_followable/blob/master/app/models/follow.rb].
 
 == Setup
 
@@ -32,7 +27,7 @@ If you would like a model to follow or to be followed by any other model, just a
     acts_as_followable
     ...
   end
-
+  
 == Examples
 
 To have an object start following another use the following: 
@@ -84,3 +79,29 @@ To get a list of records of a particular type which this record is following (e.
   user.following_by_type('Book').limit(2)
   or
   user.following_book('title')
+
+You can also query Follow model records like this:
+
+  # What user is following
+  user.follows
+  user.follows.limit(1)
+
+  # Who follows a book
+  book.followings
+  book.followings.order('created_at')
+
+  # Follow records by follower type
+  Follow.for_follower_type('User')
+  Follow.for_follower_type('User').limit(1)
+
+  # Follow records by followable type
+  Follow.for_followable_type('Book')
+  Follow.for_followable_type('Book').order('created_at')
+
+  # Follow records from follower
+  Follow.for_follower(user)
+  Follow.for_follower(user).limit(1)
+
+  # Follow records from followable
+  Follow.for_followable(book)
+  Follow.for_followable(book).order('created_at')
