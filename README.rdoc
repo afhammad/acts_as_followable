@@ -1,4 +1,4 @@
-= acts_as_followable
+= ActsAsFollowable - Model following
 
 This plugin is a Rails3 alternative of the plugin called {acts_as_follower}[https://github.com/tcocca/acts_as_follower] 
 by tcocca. It allows any model to follow other models and a model can be followed by other models.
