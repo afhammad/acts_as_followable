@@ -1,0 +1,86 @@
+= acts_as_followable
+
+This plugin is a Rails3 alternative of the plugin called {acts_as_follower}[https://github.com/tcocca/acts_as_follower] 
+by tcocca. It allows any model to follow other models and a model can be followed by other models.
+
+Usually you will use this plugin when implementing a blog-style website where users will follow other users or for 
+users to follow Books, etc...
+
+== Installation (Rails 3 ready)
+
+Add this line to your Gemfile (and run bundle install):
+
+  gem 'acts_as_followable'
+
+Run the generator which will generate a migration file.
+
+  script/generate acts_as_followable
+
+The plugin comes with a Follow model file. You can override the default model definition by creating a new 
+app/models/follow.rb file with the content:
+
+  class Follow < ActiveRecord::Base
+    belongs_to :followable, :polymorphic => true
+    belongs_to :follower, :polymorphic => true
+  end  
+
+== Setup
+
+If you would like a model to follow or to be followed by any other model, just add the mixin:
+  class User < ActiveRecord::Base
+    ...
+    acts_as_followable
+    ...
+  end
+
+== Examples
+
+To have an object start following another use the following: 
+
+  book = Book.find(1)
+  user = User.find(1)
+  user.follow(book)
+
+To stop following an object use the following 
+
+  user.stop_following(book)
+  
+You can check to see if an object is following another object through the following:
+
+  user.following?(book)
+
+You can check to see if an object is followed by another object through the following:
+  
+  book.followed_by?(user)
+
+To get a list of followers by a given type use the following (e.g. list of users that follow a book):
+
+  User.following(book)
+  or
+  book.followers_by_type('User')
+  or
+  book.user_followers
+  
+  # Also
+  
+  User.following(book).order('name').limit(2)
+  or
+  book.followers_by_type('User').limit(2)
+  or
+  book.user_followers.order('name')
+
+To get a list of records of a particular type which this record is following (e.g. list of books followed by a user)
+
+  Book.followed_by(user)
+  or
+  user.following_by_type('Book')
+  or
+  user.following_book
+
+  # Also
+
+  Book.followed_by(user).order('title').limit(2)
+  or
+  user.following_by_type('Book').limit(2)
+  or
+  user.following_book('title')
