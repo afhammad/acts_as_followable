@@ -64,8 +64,13 @@ module ActsAsFollowable
       end
 
       # Destroys all followers of a given type
-      def remove_followers_by_type(type)
+      def destroy_followers_by_type(type)
         Follow.where(['follows.followable_id=? AND follows.followable_type=? AND follows.follower_type=?', self.id, self.class.name, type]).destroy_all
+      end
+
+      # Destroys all followings of a given type
+      def destroy_followings_by_type(type)
+        Follow.where(['follows.follower_id=? AND follows.follower_type=? AND follows.followable_type=?', self.id, self.class.name, type]).destroy_all
       end
 
       # Returns true if the current instance is followed by the passed record

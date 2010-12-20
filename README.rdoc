@@ -41,9 +41,10 @@ To stop following an object use the following:
 
   user.stop_following(book)
 
-You can remove all the followers like this:
+You can remove all the followers/followings like this:
 
-  user.remove_followers_by_type('Book')
+  user.destroy_followers_by_type('User')
+  user.destroy_followings_by_type('Book')
 
 You can check to see if an object is following another object through the following:
 
